@@ -3,7 +3,7 @@
 typora-root-url: ./images
 ---
 
-Chinese version of the README -> please [click here](./README.md)
+Chinese version of the README -> please [click here](README.md)
 
 Dobot   TCP-IP-Python-V3   secondary development API interface ([TCP-IP-Python-V3 Public Chinese README](https://github.com/Dobot-Arm/TCP-IP-Python-V3.git))
 

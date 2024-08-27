@@ -170,7 +170,7 @@ if __name__ == '__main__':
 
 
     # Create directories to save images and robot poses
-    output_dir = '../calibration_data'
+    output_dir = 'calibration_data'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Load the captured robot poses and image paths
-poses_file = '../calibration_data/robot_poses.txt'
+poses_file = 'calibration_data/robot_poses.txt'
 image_paths = '../calibration_data/images'
 robot_poses = []
 
