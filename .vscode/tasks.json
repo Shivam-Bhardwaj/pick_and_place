@@ -1,0 +1,85 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run (main)",
+            "type": "shell",
+            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "args": [
+                "${workspaceFolder}/main.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Run (Get Pose)",
+            "type": "shell",
+            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "args": [
+                "${workspaceFolder}/get_poses.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Run (Get Transform)",
+            "type": "shell",
+            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "args": [
+                "${workspaceFolder}/get_transform.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Check python version",
+            "type": "shell",
+            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "args": [
+                "--version"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Install required packages",
+            "type": "shell",
+            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\Scripts\\pip3.exe",
+            "args": [
+                "install",
+                "-r", 
+                "${workspaceFolder}//requirements.txt"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        },
+        {
+            "label": "Check pip install list",
+            "type": "shell",
+            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\Scripts\\pip3.exe",
+            "args": [
+                "list"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }
+    ]
+}

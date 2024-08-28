@@ -140,16 +140,16 @@ if __name__ == '__main__':
     point_d = [-636.632202,-3.044780,56.267506,-179.540359,-0.041757,88.652534]
 
 
-    arduinoPort = "COM5"
-    baudRate = 115200
-    timeout = 1
-    ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
-    time.sleep(2)
+    # arduinoPort = "COM5"
+    # baudRate = 115200
+    # timeout = 1
+    # ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
+    # time.sleep(2)
 
-    activateCommand = '1'
-    releaseCommand = '2'
-    resetCommand = '3'
-    ser.write(resetCommand.encode())
+    # activateCommand = '1'
+    # releaseCommand = '2'
+    # resetCommand = '3'
+    # ser.write(resetCommand.encode())
     while True:
         # # Point A (original point)
         # RunPoint(move, point_a)
