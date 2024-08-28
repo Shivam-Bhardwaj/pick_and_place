@@ -1,0 +1,15 @@
+*.log        # Ignores all .log files
+*.tmp        # Ignores all .tmp files
+secrets.txt  # Ignores a specific file
+.env         # Ignores environment files
+/build/      # Ignores the build directory
+/dist/       # Ignores the dist directory
+
+.vscode/**
+__pycache__/          # Ignore Python cache files
+*.py[cod]             # Ignore compiled Python files
+.venv/                # Ignore virtual environment directories
+*.bak                 # Ignore all backup files
+*.tmp                 # Ignore temporary files
+.DS_Store             # Ignore macOS Finder metadata
+Thumbs.db             # Ignore Windows thumbnail cache
