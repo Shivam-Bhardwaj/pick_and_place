@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Run (main)",
+            "label": "Run (main Windows)",
             "type": "shell",
             "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
             "args": [
@@ -15,7 +15,7 @@
             "problemMatcher": [],
         }, 
         {
-            "label": "Run (Get Pose)",
+            "label": "Run (Get Pose Windows)",
             "type": "shell",
             "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
             "args": [
@@ -41,7 +41,7 @@
             "problemMatcher": [],
         }, 
         {
-            "label": "Check python version",
+            "label": "Check python version (Windows)",
             "type": "shell",
             "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
             "args": [
@@ -54,7 +54,7 @@
             "problemMatcher": [],
         }, 
         {
-            "label": "Install required packages",
+            "label": "Install required packages (Windows)",
             "type": "shell",
             "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\Scripts\\pip3.exe",
             "args": [
@@ -69,9 +69,89 @@
             "problemMatcher": [],
         },
         {
-            "label": "Check pip install list",
+            "label": "Check pip install list (Windows)",
             "type": "shell",
             "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\Scripts\\pip3.exe",
+            "args": [
+                "list"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Run (main Linux)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/python3",
+            "args": [
+                "${workspaceFolder}/main.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Run (Get Pose Linux)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/python3",
+            "args": [
+                "${workspaceFolder}/get_poses.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Run (Get Transform Linux)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/python3",
+            "args": [
+                "${workspaceFolder}/get_transform.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Check python version (Linux)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/python3",
+            "args": [
+                "--version"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Install required packages (Linux)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/pip3",
+            "args": [
+                "install",
+                "-r", 
+                "${workspaceFolder}//requirements.txt"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        },
+        {
+            "label": "Check pip install list (Linux)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/pip3",
             "args": [
                 "list"
             ],
