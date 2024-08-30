@@ -7,6 +7,7 @@ import re
 import serial
 import time
 from robot_mapping import Robot_Mapping
+from workpiece_tracking import tracking
 
 # 全局变量(当前坐标)
 current_actual = [-1]
@@ -219,53 +220,55 @@ if __name__ == '__main__':
         
         # get the work piece position
         work_piece_tracker = Robot_Mapping()
-        work_piece_offset = work_piece_tracker.tracking()
+        work_piece_offset = work_piece_tracker.tracking_2()
+        
+        print(work_piece_offset)
+        time.sleep(1)
 
-        target_position = [x for x in zero_position]      
-        for i in range(6): 
-            target_position[i] = zero_position[i] - suctionOffset[i]
-        for i in range(len(work_piece_offset)):
-            target_position[i] = target_position[i] - work_piece_offset[i]
+        # target_position = [x for x in zero_position]      
+        # for i in range(6): 
+        #     target_position[i] = zero_position[i] - suctionOffset[i]
+        # for i in range(len(work_piece_offset)):
+        #     target_position[i] = target_position[i] - work_piece_offset[i]
         
-        target_top_position = [x for x in target_position]
-        target_top_position[2] = 150
+        # target_top_position = [x for x in target_position]
+        # target_top_position[2] = 150
         
-        # move to the target top position
-        RunPoint(move, target_top_position)
-        WaitArrive(target_top_position)
+        # # move to the target top position
+        # RunPoint(move, target_top_position)
+        # WaitArrive(target_top_position)
         
-        ser.write(activateCommand.encode())  # activate valve
+        # ser.write(activateCommand.encode())  # activate valve
         
-        # move to the target position
-        RunPoint(move, target_position)
-        WaitArrive(target_position)
-        time.sleep(1)
+        # # move to the target position
+        # RunPoint(move, target_position)
+        # WaitArrive(target_position)
         
         
-        # move back to the target top position
-        RunPoint(move, target_top_position)
-        WaitArrive(target_top_position)
+        # # move back to the target top position
+        # RunPoint(move, target_top_position)
+        # WaitArrive(target_top_position)
         
-        # move back to zero position
-        RunPoint(move, zero_position)
-        WaitArrive(zero_position)
+        # # move back to zero position
+        # RunPoint(move, zero_position)
+        # WaitArrive(zero_position)
         
-        RunPoint(move, place_zero_pos)
-        WaitArrive(place_zero_pos)
+        # RunPoint(move, place_zero_pos)
+        # WaitArrive(place_zero_pos)
         
-        RunPoint(move, place_top_pos)
-        WaitArrive(place_top_pos)
+        # RunPoint(move, place_top_pos)
+        # WaitArrive(place_top_pos)
         
-        RunPoint(move, place_pos)
-        WaitArrive(place_pos)
+        # RunPoint(move, place_pos)
+        # WaitArrive(place_pos)
         
-        ser.write(releaseCommand.encode())  # activate valve
-        time.sleep(1)
+        # ser.write(releaseCommand.encode())  # activate valve
+        # sleep(0.8)
         
-        RunPoint(move, place_zero_pos)
-        WaitArrive(place_zero_pos)
+        # RunPoint(move, place_zero_pos)
+        # WaitArrive(place_zero_pos)
         
-        RunPoint(move, zero_position)
-        WaitArrive(zero_position)
+        # RunPoint(move, zero_position)
+        # WaitArrive(zero_position)
 
         # dashboard.GetPose()
