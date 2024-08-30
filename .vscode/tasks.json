@@ -113,6 +113,19 @@
             "problemMatcher": [],
         }, 
         {
+            "label": "Run (Circule Finder)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
+            "args": [
+                "${workspaceFolder}/circule_finder.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+        }, 
+        {
             "label": "Run (Get Pose Linux)",
             "type": "shell",
             "command": "/home/jack/.pyenv/versions/cr5-3.12.5/bin/python3",
