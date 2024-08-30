@@ -8,6 +8,7 @@ from dobot_api import *
 import json
 from files.alarm_controller import alarm_controller_list
 from files.alarm_servo import alarm_servo_list
+import os
 
 LABEL_JOINT = [["J1-", "J2-", "J3-", "J4-", "J5-", "J6-"],
                ["J1:", "J2:", "J3:", "J4:", "J5:", "J6:"],
@@ -38,9 +39,9 @@ class RobotUI(object):
         self.root = Tk()
         self.root.title("Python demo V3")
         # fixed window size
-        self.root.geometry("900x850")
-        # set window icon
-        self.root.iconbitmap("images/robot.ico")
+        self.root.geometry("1800x1700")
+
+        # self.root.iconbitmap("/home/jack/Documents/pick_and_place/images/robot.ico")
 
         # global state dict
         self.global_state = {}
@@ -57,7 +58,7 @@ class RobotUI(object):
 
         self.label_ip = Label(self.frame_robot, text="IP Address:")
         self.label_ip.place(rely=0.2, x=10)
-        ip_port = StringVar(self.root, value="192.168.5.1")
+        ip_port = StringVar(self.root, value="169.254.222.125")
         self.entry_ip = Entry(self.frame_robot, width=12, textvariable=ip_port)
         self.entry_ip.place(rely=0.2, x=90)
 

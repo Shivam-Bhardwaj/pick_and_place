@@ -1,10 +1,11 @@
 {
     "version": "2.0.0",
+
     "tasks": [
         {
             "label": "Run (main)",
             "type": "shell",
-            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
             "args": [
                 "${workspaceFolder}/main.py"
             ],
@@ -17,7 +18,7 @@
         {
             "label": "Run (Get Pose)",
             "type": "shell",
-            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
             "args": [
                 "${workspaceFolder}/get_poses.py"
             ],
@@ -30,7 +31,7 @@
         {
             "label": "Run (Get Transform)",
             "type": "shell",
-            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
             "args": [
                 "${workspaceFolder}/get_transform.py"
             ],
@@ -41,9 +42,22 @@
             "problemMatcher": [],
         }, 
         {
+            "label": "Launch GUI (Run Main UI)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
+            "args": [
+                "${workspaceFolder}/main_UI.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        },
+        {
             "label": "Check python version",
             "type": "shell",
-            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\python.exe",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
             "args": [
                 "--version"
             ],
@@ -56,7 +70,7 @@
         {
             "label": "Install required packages",
             "type": "shell",
-            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\Scripts\\pip3.exe",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/pippip 3",
             "args": [
                 "install",
                 "-r", 
@@ -71,7 +85,7 @@
         {
             "label": "Check pip install list",
             "type": "shell",
-            "command": "C:\\Users\\tseng\\anaconda3\\envs\\cr5\\Scripts\\pip3.exe",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
             "args": [
                 "list"
             ],

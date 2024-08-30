@@ -36,7 +36,13 @@ def calculate_transformation():
     # Process each image and pose
     for image_path, pose in zip(image_paths, robot_poses):
         img = cv2.imread(image_path)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # Display the image in a window
+        cv2.imshow('Image Window', img)
+
+        # Wait for a key press indefinitely or for a specific amount of time
+        cv2.waitKey(0)  # 0 means wait indefinitely until a key is pressed
+        
+        gray = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
 
         # Find the checkerboard corners
         ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD, None)
