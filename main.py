@@ -122,6 +122,10 @@ def ClearRobotError(dashboard: DobotApiDashboard):
         globalLockValue.release()
         sleep(5)
 
+def robot_movement(_movement = None): 
+    if _movement is None: 
+        return
+    
 
 if __name__ == '__main__':
     dashboard, move, feed = ConnectRobot()
@@ -141,16 +145,16 @@ if __name__ == '__main__':
     # point_d = [-636.632202,-3.044780,56.267506,-179.540359,-0.041757,88.652534]
 
 
-    # arduinoPort = "COM5"
-    # baudRate = 115200
-    # timeout = 1
-    # ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
-    # time.sleep(2)
+    arduinoPort = "/dev/ttyACM0"
+    baudRate = 115200
+    timeout = 1
+    ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
+    time.sleep(2)
 
-    # activateCommand = '1'
-    # releaseCommand = '2'
-    # resetCommand = '3'
-    # ser.write(resetCommand.encode())
+    activateCommand = '2'
+    releaseCommand = '1'
+    resetCommand = '3'
+    ser.write(resetCommand.encode())
     while True:
         # # Point A (original point)
         # RunPoint(move, point_a)
@@ -200,28 +204,68 @@ if __name__ == '__main__':
         # RunPoint(move, point_a)-
         # WaitArrive(point_a)
 
+        zero_position = ([-20.064650,565.365784,578.577271,179.839401,0.334552,-91.637856])
+        place_zero_pos = [-563.968567,44.502773,578.577271,179.839401,0.334552,-8.182272]
+        place_top_pos = [-617.008545,44.502773,578.577271,179.839401,0.334552,-8.182272]
+        place_pos = [-617.008545,44.502773,61.118225,179.839401,0.334552,-8.182272] 
+        
         # move to zero posotion 
-        zeroPosition = ([-20.064650,565.365784,578.577271,179.839401,0.334552,-91.637856])
-        RunPoint(move, zeroPosition)
-        WaitArrive(zeroPosition)
+        RunPoint(move, zero_position)
+        WaitArrive(zero_position)
         
         # calculate the suction offset
         suctionPosition = [67.508217,660.830994,78.468628,179.839401,0.334552,-91.637856]
-        suctionOffset = [x - y for x, y in zip(zeroPosition, suctionPosition)]      
+        suctionOffset = [x - y for x, y in zip(zero_position, suctionPosition)]      
         
         # get the work piece position
         work_piece_tracker = Robot_Mapping()
         work_piece_offset = work_piece_tracker.tracking()
 
-        calibratedPos = [0] * 6      
+        target_position = [x for x in zero_position]      
         for i in range(6): 
-            calibratedPos[i] = zeroPosition[i] - suctionOffset[i]
+            target_position[i] = zero_position[i] - suctionOffset[i]
         for i in range(len(work_piece_offset)):
-            calibratedPos[i] = calibratedPos[i] - work_piece_offset[i]
+            target_position[i] = target_position[i] - work_piece_offset[i]
         
-        print(calibratedPos)
-        RunPoint(move, calibratedPos)
-        WaitArrive(calibratedPos)
+        target_top_position = [x for x in target_position]
+        target_top_position[2] = 150
         
+        # move to the target top position
+        RunPoint(move, target_top_position)
+        WaitArrive(target_top_position)
+        
+        ser.write(activateCommand.encode())  # activate valve
+        
+        # move to the target position
+        RunPoint(move, target_position)
+        WaitArrive(target_position)
+        time.sleep(1)
+        
+        
+        # move back to the target top position
+        RunPoint(move, target_top_position)
+        WaitArrive(target_top_position)
+        
+        # move back to zero position
+        RunPoint(move, zero_position)
+        WaitArrive(zero_position)
+        
+        RunPoint(move, place_zero_pos)
+        WaitArrive(place_zero_pos)
+        
+        RunPoint(move, place_top_pos)
+        WaitArrive(place_top_pos)
+        
+        RunPoint(move, place_pos)
+        WaitArrive(place_pos)
+        
+        ser.write(releaseCommand.encode())  # activate valve
+        time.sleep(1)
+        
+        RunPoint(move, place_zero_pos)
+        WaitArrive(place_zero_pos)
+        
+        RunPoint(move, zero_position)
+        WaitArrive(zero_position)
+
         # dashboard.GetPose()
-        time.sleep(2)
