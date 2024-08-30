@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 numpy
 opencv-python
 pypylon
+=======
+numpy
+opencv-python
+pypylon
+pyserial
+>>>>>>> 60233b630d267225af4d1d1521331393fe0960b1
