@@ -12,12 +12,10 @@ import numpy as np
 #                           [0,  0,  1]], dtype=np.float32)
 #
 # dist_coefficients = np.array([k1, k2, p1, p2, k3], dtype=np.float32)
-
-camera_matrix = np.array([[2431.93, 0, 1843.19],
-                          [0, 2431.40, 1395.97],
+camera_matrix = np.array([[2452.77, 0, 1846.52],
+                          [0, 2453.79, 1397.71],
                           [0,  0,  1]], dtype=np.float32)
-
-dist_coefficients = np.array([-0.24168, 0.11930, -0.00064, -0.00077, -0.02421], dtype=np.float32)
+dist_coefficients = np.array([-0.24818, 0.13173, 0.00068, -0.00053, -0.04507], dtype=np.float32)
 
 # Connecting to the first available camera
 camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())

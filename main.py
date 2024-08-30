@@ -6,6 +6,7 @@ import re
 
 import serial
 import time
+from robot_mapping import Robot_Mapping
 
 # 全局变量(当前坐标)
 current_actual = [-1]
@@ -199,18 +200,28 @@ if __name__ == '__main__':
         # RunPoint(move, point_a)-
         # WaitArrive(point_a)
 
-        # zero posotion 
-        zeroPosition = ([-39.764706,547.754089,582.631653,179.624405,0.851576,-91.122894])
-        # # offset = [-0.02093124 * 1000, -0.00694516 * 1000, -0.01624545 * 1000, 0, 0, 0]
-        offset2 =[-0.21851793*1000,  0.1222258*-1000, -(582-81), 0, 0, 0, 0] # [ 0.18245879 -0.01815373 -0.04445153]
-        calibratedPos = [0] * 6
-        suctionPosition = [51.291100,705.200500,582.631653,179.624405,0.851576,-91.122894]
-        suctionOffset = [x - y for x, y in zip(zeroPosition, suctionPosition)] 
-        for i in range(6): 
-            calibratedPos[i] = zeroPosition[i] + offset2[i] - suctionOffset[i]
+        # move to zero posotion 
+        zeroPosition = ([-20.064650,565.365784,578.577271,179.839401,0.334552,-91.637856])
         RunPoint(move, zeroPosition)
         WaitArrive(zeroPosition)
-        # suction_offset = [51.291100,705.200500,91.198929,179.624405,0.851576,-91.122894] #
         
-        dashboard.GetPose()
-        time.sleep(10)
+        # calculate the suction offset
+        suctionPosition = [67.508217,660.830994,78.468628,179.839401,0.334552,-91.637856]
+        suctionOffset = [x - y for x, y in zip(zeroPosition, suctionPosition)]      
+        
+        # get the work piece position
+        work_piece_tracker = Robot_Mapping()
+        work_piece_offset = work_piece_tracker.tracking()
+
+        calibratedPos = [0] * 6      
+        for i in range(6): 
+            calibratedPos[i] = zeroPosition[i] - suctionOffset[i]
+        for i in range(len(work_piece_offset)):
+            calibratedPos[i] = calibratedPos[i] - work_piece_offset[i]
+        
+        print(calibratedPos)
+        RunPoint(move, calibratedPos)
+        WaitArrive(calibratedPos)
+        
+        # dashboard.GetPose()
+        time.sleep(2)
