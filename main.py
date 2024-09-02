@@ -6,8 +6,6 @@ import re
 
 import serial
 import time
-from robot_mapping import Robot_Mapping
-from workpiece_tracking import tracking
 
 # 全局变量(当前坐标)
 current_actual = [-1]
@@ -146,16 +144,16 @@ if __name__ == '__main__':
     # point_d = [-636.632202,-3.044780,56.267506,-179.540359,-0.041757,88.652534]
 
 
-    arduinoPort = "/dev/ttyACM0"
-    baudRate = 115200
-    timeout = 1
-    ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
-    time.sleep(2)
+    # arduinoPort = "/dev/ttyACM0"
+    # baudRate = 115200
+    # timeout = 1
+    # ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
+    # time.sleep(2)
 
-    activateCommand = '2'
-    releaseCommand = '1'
-    resetCommand = '3'
-    ser.write(resetCommand.encode())
+    # activateCommand = '2'
+    # releaseCommand = '1'
+    # resetCommand = '3'
+    # ser.write(resetCommand.encode())
     while True:
         # # Point A (original point)
         # RunPoint(move, point_a)
@@ -205,25 +203,25 @@ if __name__ == '__main__':
         # RunPoint(move, point_a)-
         # WaitArrive(point_a)
 
-        zero_position = ([-20.064650,565.365784,578.577271,179.839401,0.334552,-91.637856])
-        place_zero_pos = [-563.968567,44.502773,578.577271,179.839401,0.334552,-8.182272]
-        place_top_pos = [-617.008545,44.502773,578.577271,179.839401,0.334552,-8.182272]
-        place_pos = [-617.008545,44.502773,61.118225,179.839401,0.334552,-8.182272] 
+        # zero_position = ([-20.064650,565.365784,578.577271,179.839401,0.334552,-91.637856])
+        # place_zero_pos = [-563.968567,44.502773,578.577271,179.839401,0.334552,-8.182272]
+        # place_top_pos = [-617.008545,44.502773,578.577271,179.839401,0.334552,-8.182272]
+        # place_pos = [-617.008545,44.502773,61.118225,179.839401,0.334552,-8.182272] 
         
-        # move to zero posotion 
-        RunPoint(move, zero_position)
-        WaitArrive(zero_position)
+        # # move to zero posotion 
+        # RunPoint(move, zero_position)
+        # WaitArrive(zero_position)
         
-        # calculate the suction offset
-        suctionPosition = [67.508217,660.830994,78.468628,179.839401,0.334552,-91.637856]
-        suctionOffset = [x - y for x, y in zip(zero_position, suctionPosition)]      
+        # # calculate the suction offset
+        # suctionPosition = [67.508217,660.830994,78.468628,179.839401,0.334552,-91.637856]
+        # suctionOffset = [x - y for x, y in zip(zero_position, suctionPosition)]      
         
-        # get the work piece position
-        work_piece_tracker = Robot_Mapping()
-        work_piece_offset = work_piece_tracker.tracking_2()
+        # # get the work piece position
+        # work_piece_tracker = Robot_Mapping()
+        # work_piece_offset = work_piece_tracker.tracking_2()
         
-        print(work_piece_offset)
-        time.sleep(1)
+        # print(work_piece_offset)
+        # time.sleep(1)
 
         # target_position = [x for x in zero_position]      
         # for i in range(6): 
@@ -270,5 +268,52 @@ if __name__ == '__main__':
         
         # RunPoint(move, zero_position)
         # WaitArrive(zero_position)
-
-        # dashboard.GetPose()
+        
+        # zero_pos = [82.732903,515.261353,695.823425,-178.826981,-1.433095,-3.567428]
+        # RunPoint(move, zero_pos)
+        # WaitArrive(zero_pos)
+        
+        # point_A = [32.732903,515.261353,695.823425,-178.826981,-1.433095,-3.567428]
+        # point_B = [132.732903,515.261353,695.823425,-178.826981,-1.433095,-3.567428]
+        # while True: 
+        #     RunPoint(move, point_A)
+        #     WaitArrive(point_A)
+            
+        #     RunPoint(move, point_B)
+        #     WaitArrive(point_B)
+        
+        # zero position
+        robot_zero_position = [84.346947,463.758148,643.298584,179.513504,0.671409,178.814194]
+        workspace_zero_robot_position = [311.455750,417.828552,643.298584,179.513504,0.671409,178.814194]
+        workpiece_position = [-609.15, 133.68, 80]
+        
+        workpiece_robot_position_offset = [x for x in workspace_zero_robot_position]
+        for i in range(2): 
+            workpiece_robot_position_offset[i] += workpiece_position[i]
+        workpiece_robot_position_offset[2] = 200
+        
+        workpiece_robot_position = [x for x in workspace_zero_robot_position]
+        for i in range(2): 
+            workpiece_robot_position[i] += workpiece_position[i]
+        workpiece_robot_position[2] = workpiece_position[2]
+        
+        
+        
+        RunPoint(move, robot_zero_position)
+        WaitArrive(robot_zero_position)
+        
+        time.sleep(1)
+        
+        RunPoint(move, workpiece_robot_position_offset)
+        WaitArrive(workpiece_robot_position_offset)
+        
+        time.sleep(1)
+        
+        RunPoint(move, workpiece_robot_position)
+        WaitArrive(workpiece_robot_position)
+        
+        time.sleep(1)
+        
+            
+        dashboard.GetPose()
+        time.sleep(2)
