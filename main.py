@@ -304,15 +304,15 @@ if __name__ == '__main__':
         
         time.sleep(1)
         
-        RunPoint(move, workpiece_robot_position_offset)
-        WaitArrive(workpiece_robot_position_offset)
+        # RunPoint(move, workpiece_robot_position_offset)
+        # WaitArrive(workpiece_robot_position_offset)
         
-        time.sleep(1)
+        # time.sleep(1)
         
-        RunPoint(move, workpiece_robot_position)
-        WaitArrive(workpiece_robot_position)
+        # RunPoint(move, workpiece_robot_position)
+        # WaitArrive(workpiece_robot_position)
         
-        time.sleep(1)
+        # time.sleep(1)
         
             
         dashboard.GetPose()

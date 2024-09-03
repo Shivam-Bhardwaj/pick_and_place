@@ -4,9 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "echo",
+            "label": "Run (main)",
             "type": "shell",
-            "command": "echo Hello"
-        }
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
+            "args": [
+                "main.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
     ]
 }
