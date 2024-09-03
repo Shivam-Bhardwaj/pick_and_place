@@ -16,5 +16,32 @@
             },
             "problemMatcher": [],
         }, 
+        {
+            "label": "Run (mixed object detectoin)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
+            "args": [
+                "mixed_object_detection.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        {
+            "label": "Run (tune mixed object detection)",
+            "type": "shell",
+            "command": "/home/jack/.pyenv/versions/cr5-3.12.0/bin/python3",
+            "args": [
+                "mixed_object_detection_tuning.py"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+        }, 
+        
     ]
 }

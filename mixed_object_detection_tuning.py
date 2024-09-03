@@ -20,15 +20,22 @@ aruco_positions = {
 # Prepare to store the pixel coordinates of the ArUCo markers
 pixel_positions = {}
 
-# Hardcoded parameters
-gaussian_kernel = 50
-threshold_value = 141
-canny_min = 141
-canny_max = 336
-circularity_min = 60 / 100.0  # Convert to 0.6
-circularity_max = 164 / 100.0  # Convert to 1.64
-aspect_ratio_min = 96 / 100.0  # Convert to 0.96
-aspect_ratio_max = 159 / 100.0  # Convert to 1.59
+# Callback function for trackbars (required but unused)
+def nothing(x):
+    pass
+
+# Create a window for the GUI
+cv2.namedWindow('Shape Detection')
+
+# Create trackbars for adjusting parameters with default values
+cv2.createTrackbar('Gaussian Kernel', 'Shape Detection', 50, 50, nothing)
+cv2.createTrackbar('Threshold', 'Shape Detection', 141, 255, nothing)
+cv2.createTrackbar('Canny Min', 'Shape Detection', 141, 500, nothing)
+cv2.createTrackbar('Canny Max', 'Shape Detection', 336, 500, nothing)
+cv2.createTrackbar('Circularity Min', 'Shape Detection', 60, 100, nothing)  # Default 60%
+cv2.createTrackbar('Circularity Max', 'Shape Detection', 164, 200, nothing)  # Default 164%
+cv2.createTrackbar('Aspect Ratio Min', 'Shape Detection', 96, 200, nothing)  # Default 96%
+cv2.createTrackbar('Aspect Ratio Max', 'Shape Detection', 159, 200, nothing)  # Default 159%
 
 if not cap.isOpened():
     print("Error: Could not open video stream from webcam.")
@@ -73,11 +80,14 @@ while True:
 
                 masked_gray = cv2.bitwise_and(gray, gray, mask=mask)
 
-                if gaussian_kernel % 2 == 0:  # Ensure kernel size is odd
-                    gaussian_kernel += 1
+                # Get current positions of trackbars
+                ksize = cv2.getTrackbarPos('Gaussian Kernel', 'Shape Detection')
+                if ksize % 2 == 0:  # Ensure kernel size is odd
+                    ksize += 1
 
-                blur_value = cv2.GaussianBlur(masked_gray, (gaussian_kernel, gaussian_kernel), 0)
+                blur_value = cv2.GaussianBlur(masked_gray, (ksize, ksize), 0)
 
+                threshold_value = cv2.getTrackbarPos('Threshold', 'Shape Detection')
                 _, thresh = cv2.threshold(blur_value, threshold_value, 255, cv2.THRESH_BINARY_INV)
 
                 thresh = cv2.bitwise_and(thresh, thresh, mask=mask)
@@ -85,6 +95,12 @@ while True:
                 contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
                 shapes_info = []
+
+                # Get circularity and aspect ratio limits from trackbars
+                circularity_min = cv2.getTrackbarPos('Circularity Min', 'Shape Detection') / 100.0
+                circularity_max = cv2.getTrackbarPos('Circularity Max', 'Shape Detection') / 100.0
+                aspect_ratio_min = cv2.getTrackbarPos('Aspect Ratio Min', 'Shape Detection') / 100.0
+                aspect_ratio_max = cv2.getTrackbarPos('Aspect Ratio Max', 'Shape Detection') / 100.0
 
                 for contour in contours:
                     approx = cv2.approxPolyDP(contour, 0.04 * cv2.arcLength(contour, True), True)
@@ -121,34 +137,12 @@ while True:
                             rect_center_world = cv2.perspectiveTransform(np.array([rect_center_img]), matrix)
                             rect_center_world = rect_center_world[0][0]
 
-                            # Calculate orientation relative to the positive y-axis (Aruco 0 to Aruco 3)
-                            angle = rect[2]  # Angle of the rectangle in the image
-                            delta_x = rect_center_world[0] - aruco_positions[0][0]
-                            delta_y = rect_center_world[1] - aruco_positions[0][1]
-                            orientation = np.degrees(np.arctan2(delta_y, delta_x))
-
-                            # Determine the relative orientation to the y-axis (Aruco 0 to Aruco 3)
-                            angle_to_y_axis = np.abs(orientation - 90)
-                            if angle_to_y_axis > 90:
-                                rotation_direction = "Clockwise"
-                            else:
-                                rotation_direction = "Counter-Clockwise"
-
-                            # Calculate arrow direction
-                            arrow_length = 50  # Adjust as needed
-                            angle_radians = np.radians(angle)
-                            end_x = int(rect[0][0] + arrow_length * np.cos(angle_radians))
-                            end_y = int(rect[0][1] + arrow_length * np.sin(angle_radians))
-
                             shapes_info.append({
                                 'shape': shape_type,
                                 'area': width * height,
                                 'pixel_center': (int(rect[0][0]), int(rect[0][1])),
                                 'world_center': (rect_center_world[0], rect_center_world[1]),
-                                'box': box,
-                                'orientation': angle_to_y_axis,
-                                'rotation_direction': rotation_direction,
-                                'arrow_end': (end_x, end_y)
+                                'box': box
                             })
 
                 shapes_info.sort(key=lambda c: c['area'])
@@ -158,15 +152,6 @@ while True:
                         cv2.circle(frame, shape['pixel_center'], int(shape['radius']), (255, 0, 0), 2)
                     elif shape['shape'] in ['Square', 'Rectangle']:
                         cv2.drawContours(frame, [shape['box']], 0, (0, 255, 255), 2)
-                        # Draw the orientation arrow
-                        cv2.arrowedLine(frame, shape['pixel_center'], shape['arrow_end'], (0, 255, 0), 2, tipLength=0.3)
-                        # Display orientation and rotation direction
-                        # angle_text = f"Angle: {shape['orientation']:.2f} {shape['rotation_direction']}"
-                        angle_text = f"Angle: {shape['orientation']:.2f}"
-                        
-                        cv2.putText(frame, angle_text,
-                                    (shape['pixel_center'][0] + 10, shape['pixel_center'][1] + 30),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
                     cv2.circle(frame, shape['pixel_center'], 5, (0, 255, 0), -1)
                     cv2.putText(frame, f"{shape['shape']} Rank: {i+1}",
                                 (shape['pixel_center'][0] + 10, shape['pixel_center'][1] - 30),
@@ -175,7 +160,7 @@ while True:
                                 (shape['pixel_center'][0] + 10, shape['pixel_center'][1] - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        cv2.imshow("Shape Detection with Orientation Arrows", frame)
+        cv2.imshow("Shape Detection with Area Ranking and Real-World Coordinates", frame)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
@@ -186,3 +171,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+''
