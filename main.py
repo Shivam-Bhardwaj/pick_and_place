@@ -145,16 +145,16 @@ if __name__ == '__main__':
     
     
 
-    # arduinoPort = "/dev/ttyACM0"
-    # baudRate = 115200
-    # timeout = 1
-    # ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
-    # time.sleep(2)
+    arduinoPort = "/dev/ttyACM0"
+    baudRate = 115200
+    timeout = 1
+    ser = serial.Serial(arduinoPort, baudRate, timeout=timeout)
+    time.sleep(2)
 
-    # activateCommand = '2'
-    # releaseCommand = '1'
-    # resetCommand = '3'
-    # ser.write(resetCommand.encode())
+    activateCommand = '2'
+    releaseCommand = '1'
+    resetCommand = '3'
+    ser.write(resetCommand.encode())
     
     cap = cv2.VideoCapture(4)  # Replace 4 with the correct index if needed
 
@@ -174,8 +174,8 @@ if __name__ == '__main__':
     pixel_positions = {}
 
     # Hardcoded parameters
-    gaussian_kernel = 31  # Ensure kernel size is odd
-    threshold_value = 151
+    gaussian_kernel = 29  # Ensure kernel size is odd
+    threshold_value = 157
     canny_min = 141
     canny_max = 336
     circularity_min = 60 / 100.0  # Convert to 0.6
@@ -187,8 +187,8 @@ if __name__ == '__main__':
         print("Error: Could not open video stream from webcam.")
         exit()
     
-    robot_zero_position = [37.545567,523.508423,643.673096,179.513641,0.670840,177.957626]
-    workspace_zero_robot_position = [372.023956,396.518036,643.673096,179.513641,0.670840,177.957626]
+    robot_zero_position = [47.035168,502.316437,643.673096,179.513641,0.670840,177.957626]
+    workspace_zero_robot_position = [388.934357,380.423615,643.673096,179.513641,0.670840,177.957626]
     RunPoint(move, robot_zero_position)
     WaitArrive(robot_zero_position)
     dashboard.GetPose()
@@ -346,8 +346,8 @@ if __name__ == '__main__':
     print("Analyzation done!")
     
     print(f"Start moving robot for {len(shapes_info)} objects")
-    square_drop_top = [-411.482391,-229.931000,643.298584,179.513504,0.671409,-51.681812]
-    circle_drop_top = [-460.979065,98.408943,643.298584,179.513504,0.671409,-92.928215]
+    square_drop_top = [-606.770020,-121.071373, 200,179.513641,0.670840,-93.178375]
+    circle_drop_top = [-606.770020,136.928619, 200,179.513641,0.670840,-93.178375]
     
     square_drop_offset = square_drop_top.copy() 
     square_drop_offset[2] = 200
@@ -388,8 +388,8 @@ if __name__ == '__main__':
         WaitArrive(workpiece_robot_position_offset)
         
         # turn on sunction 
-        # ser.write(activateCommand.encode())
-        # time.sleep(1)
+        ser.write(activateCommand.encode())
+        time.sleep(1)
         # move to the workpeice
         RunPoint(move, workpiece_robot_position)
         WaitArrive(workpiece_robot_position)
@@ -418,8 +418,8 @@ if __name__ == '__main__':
             WaitArrive(circle_drop)
             
             # realease sunction
-            # ser.write(releaseCommand.encode())
-            # time.sleep(1)
+            ser.write(releaseCommand.encode())
+            time.sleep(1)
             
             # update next circle drop position
             circle_drop[2] += circle_drop_thickness
@@ -439,18 +439,18 @@ if __name__ == '__main__':
             
             # get the orientation and rotate it
             angle = workpeice['orientation']
-            square_drop[5] -= angle
+            square_drop[5] += angle
             
             # move to drop point
             RunPoint(move, square_drop)
             WaitArrive(square_drop)
             
             # rotate it back
-            square_drop[5] += angle
+            square_drop[5] -= angle
             
             # realease sunction
-            # ser.write(releaseCommand.encode())
-            # time.sleep(1)
+            ser.write(releaseCommand.encode())
+            time.sleep(1)
             
             # update next square drop position
             square_drop[2] += square_drop_thickness
