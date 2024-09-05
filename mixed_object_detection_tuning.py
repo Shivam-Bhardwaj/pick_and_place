@@ -145,7 +145,7 @@ while True:
                                 'box': box
                             })
 
-                shapes_info.sort(key=lambda c: c['area'])
+                shapes_info.sort(key=lambda c: c['area'], reverse=True)
 
                 for i, shape in enumerate(shapes_info):
                     if shape['shape'] == 'Circle':

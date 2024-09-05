@@ -174,23 +174,24 @@ if __name__ == '__main__':
     pixel_positions = {}
 
     # Hardcoded parameters
-    gaussian_kernel = 35  # Ensure kernel size is odd
-    threshold_value = 120
-    canny_min = 267
-    canny_max = 373
-    circularity_min = 86 / 100.0  # Convert to 0.6
-    circularity_max = 200 / 100.0  # Convert to 1.64
-    aspect_ratio_min = 79 / 100.0  # Convert to 0.96
-    aspect_ratio_max = 157 / 100.0  # Convert to 1.59
+    gaussian_kernel = 31  # Ensure kernel size is odd
+    threshold_value = 151
+    canny_min = 141
+    canny_max = 336
+    circularity_min = 60 / 100.0  # Convert to 0.6
+    circularity_max = 164 / 100.0  # Convert to 1.64
+    aspect_ratio_min = 96 / 100.0  # Convert to 0.96
+    aspect_ratio_max = 159 / 100.0  # Convert to 1.59
 
     if not cap.isOpened():
         print("Error: Could not open video stream from webcam.")
         exit()
     
-    robot_zero_position = [47.770947,484.033356,653.935364,179.513504,0.671409,177.956589]
-    workspace_zero_robot_position = [385.994476,413.744720,653.935364,179.513504,0.671409,177.956589]
+    robot_zero_position = [37.545567,523.508423,643.673096,179.513641,0.670840,177.957626]
+    workspace_zero_robot_position = [372.023956,396.518036,643.673096,179.513641,0.670840,177.957626]
     RunPoint(move, robot_zero_position)
     WaitArrive(robot_zero_position)
+    dashboard.GetPose()
     print("Start analyzing the images...")
     shapes_info = []
     for i in range(10):
@@ -362,96 +363,101 @@ if __name__ == '__main__':
      
     
     square_drop_thickness = 7
-    circle_drop_thickness = 9
+    circle_drop_thickness = 7
     
-    dashboard.GetPose()
     
-    # for workpeice in shapes_info: 
-    #     # calculate the workpiece position according to robot coordinate system
-    #     workpiece_robot_position_offset = workspace_zero_robot_position.copy()
-    #     workpiece_workspace_pos =  workpeice['world_center']
-    #     print(workpiece_workspace_pos)
-    #     workpiece_robot_position_offset[0] += workpiece_workspace_pos[0]
-    #     workpiece_robot_position_offset[1] += workpiece_workspace_pos[1]
-    #     workpiece_robot_position_offset[2] = 200
+    for workpeice in shapes_info: 
+        # calculate the workpiece position according to robot coordinate system
+        workpiece_robot_position_offset = workspace_zero_robot_position.copy()
+        workpiece_workspace_pos =  workpeice['world_center']
+        print(workpiece_workspace_pos)
+        workpiece_robot_position_offset[0] += workpiece_workspace_pos[0]
+        workpiece_robot_position_offset[1] += workpiece_workspace_pos[1]
+        workpiece_robot_position_offset[2] = 200
         
         
-    #     workpiece_robot_position = workpiece_robot_position_offset.copy()
-    #     workpiece_robot_position[2] = 75
+        workpiece_robot_position = workpiece_robot_position_offset.copy()
+        workpiece_robot_position[2] = 75
         
-    #     # move to the robot origin position
-    #     RunPoint(move, robot_zero_position)
-    #     WaitArrive(robot_zero_position)
+        # move to the robot origin position
+        RunPoint(move, robot_zero_position)
+        WaitArrive(robot_zero_position)
         
-    #     # move the robot to the workpiece with offset
-    #     RunPoint(move, workpiece_robot_position_offset)
-    #     WaitArrive(workpiece_robot_position_offset)
+        # move the robot to the workpiece with offset
+        RunPoint(move, workpiece_robot_position_offset)
+        WaitArrive(workpiece_robot_position_offset)
         
-    #     # turn on sunction 
-    #     ser.write(activateCommand.encode())
-    #     time.sleep(1)
-    #     # move to the workpeice
-    #     RunPoint(move, workpiece_robot_position)
-    #     WaitArrive(workpiece_robot_position)
+        # turn on sunction 
+        # ser.write(activateCommand.encode())
+        # time.sleep(1)
+        # move to the workpeice
+        RunPoint(move, workpiece_robot_position)
+        WaitArrive(workpiece_robot_position)
         
-    #     # move the robot up 
-    #     RunPoint(move, workpiece_robot_position_offset)
-    #     WaitArrive(workpiece_robot_position_offset)
+        # move the robot up 
+        RunPoint(move, workpiece_robot_position_offset)
+        WaitArrive(workpiece_robot_position_offset)
         
-    #     # move back to robot origin
-    #     RunPoint(move, robot_zero_position)
-    #     WaitArrive(robot_zero_position)
+        # move back to robot origin
+        RunPoint(move, robot_zero_position)
+        WaitArrive(robot_zero_position)
         
         
-    #     # check whether it's a square or not
-    #     if workpeice['shape'] == 'Circle': 
-    #         # move to circle top
-    #         RunPoint(move, circle_drop_top)
-    #         WaitArrive(circle_drop_top)
+        # check whether it's a square or not
+        if workpeice['shape'] == 'Circle': 
+            # move to circle top
+            RunPoint(move, circle_drop_top)
+            WaitArrive(circle_drop_top)
             
-    #         # move to circle offset 
-    #         RunPoint(move, circle_drop_offset)
-    #         WaitArrive(circle_drop_offset)
+            # move to circle offset 
+            RunPoint(move, circle_drop_offset)
+            WaitArrive(circle_drop_offset)
             
-    #         # move to drop point
-    #         RunPoint(move, circle_drop)
-    #         WaitArrive(circle_drop)
+            # move to drop point
+            RunPoint(move, circle_drop)
+            WaitArrive(circle_drop)
             
-    #         # realease sunction
-    #         ser.write(releaseCommand.encode())
-    #         time.sleep(1)
+            # realease sunction
+            # ser.write(releaseCommand.encode())
+            # time.sleep(1)
             
-    #         # update next circle drop position
-    #         circle_drop[2] += circle_drop_thickness
+            # update next circle drop position
+            circle_drop[2] += circle_drop_thickness
             
-    #         # move back to circle top
-    #         RunPoint(move, circle_drop_top)
-    #         WaitArrive(circle_drop_top)
+            # move back to circle top
+            RunPoint(move, circle_drop_top)
+            # WaitArrive(circle_drop_top)
             
-    #     else: # move to square position
-    #         # move to square top
-    #         RunPoint(move, square_drop_top)
-    #         WaitArrive(square_drop_top)
+        else: # move to square position
+            # move to square top
+            RunPoint(move, square_drop_top)
+            WaitArrive(square_drop_top)
             
-    #         # move to square offset 
-    #         RunPoint(move, square_drop_offset)
-    #         WaitArrive(square_drop_offset)
+            # move to square offset 
+            RunPoint(move, square_drop_offset)
+            WaitArrive(square_drop_offset)
             
-    #         # move to drop point
-    #         RunPoint(move, square_drop)
-    #         WaitArrive(square_drop)
+            # get the orientation and rotate it
+            angle = workpeice['orientation']
+            square_drop[5] -= angle
             
-    #         # realease sunction
-    #         ser.write(releaseCommand.encode())
-    #         time.sleep(1)
+            # move to drop point
+            RunPoint(move, square_drop)
+            WaitArrive(square_drop)
             
-    #         # update next square drop position
-    #         square_drop[2] += square_drop_thickness
+            # rotate it back
+            square_drop[5] += angle
             
-    #         # move back to square top
-    #         RunPoint(move, square_drop_top)
-    #         WaitArrive(square_drop_top)
-        
-    #     time.sleep(1)         
-    # RunPoint(move, robot_zero_position)
-    # WaitArrive(robot_zero_position)     
+            # realease sunction
+            # ser.write(releaseCommand.encode())
+            # time.sleep(1)
+            
+            # update next square drop position
+            square_drop[2] += square_drop_thickness
+            
+            # move back to square top
+            RunPoint(move, square_drop_top)
+            WaitArrive(square_drop_top)
+              
+    RunPoint(move, robot_zero_position)
+    WaitArrive(robot_zero_position)     
