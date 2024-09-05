@@ -165,9 +165,9 @@ if __name__ == '__main__':
     # Real-world coordinates of ArUco markers (in millimeters)
     aruco_positions = {
         0: (0.0, 0.0),
-        1: (-685.8, 0.0),
-        2: (-685.8, 330.2),
-        3: (0.0, 330.2)
+        1: (-711.2, 0.0),
+        2: (-711.2, 355.6),
+        3: (0.0, 355.6)
     }
 
     # Prepare to store the pixel coordinates of the ArUCo markers
