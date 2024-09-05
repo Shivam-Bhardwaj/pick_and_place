@@ -156,7 +156,7 @@ if __name__ == '__main__':
     resetCommand = '3'
     ser.write(resetCommand.encode())
     
-    cap = cv2.VideoCapture(4)  # Replace 4 with the correct index if needed
+    cap = cv2.VideoCapture(2)  # Replace 4 with the correct index if needed
 
     # Load the predefined dictionary for ArUco markers
     aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_50)
@@ -174,10 +174,10 @@ if __name__ == '__main__':
     pixel_positions = {}
 
     # Hardcoded parameters
-    gaussian_kernel = 29  # Ensure kernel size is odd
-    threshold_value = 157
-    canny_min = 141
-    canny_max = 336
+    gaussian_kernel = 11  # Ensure kernel size is odd
+    threshold_value = 95
+    canny_min = 205
+    canny_max = 236
     circularity_min = 60 / 100.0  # Convert to 0.6
     circularity_max = 164 / 100.0  # Convert to 1.64
     aspect_ratio_min = 96 / 100.0  # Convert to 0.96
@@ -187,14 +187,15 @@ if __name__ == '__main__':
         print("Error: Could not open video stream from webcam.")
         exit()
     
-    robot_zero_position = [47.035168,502.316437,643.673096,179.513641,0.670840,177.957626]
-    workspace_zero_robot_position = [388.934357,380.423615,643.673096,179.513641,0.670840,177.957626]
+    robot_zero_position = [-65.932831,502.316437,643.673096,179.513641,0.670840,177.957626]
+    workspace_zero_robot_position = [274.902374,403.036438,643.673096,179.513641,0.670840,177.957626]
     RunPoint(move, robot_zero_position)
     WaitArrive(robot_zero_position)
     dashboard.GetPose()
     print("Start analyzing the images...")
     shapes_info = []
     for i in range(10):
+    # while True: 
         shapes_info = []
         try:
             # Capture frame-by-frame
@@ -313,26 +314,26 @@ if __name__ == '__main__':
                     shapes_info.sort(key=lambda c: c['area'], reverse=True)
                     
 
-                    # for i, shape in enumerate(shapes_info):
-                    #     if shape['shape'] == 'Circle':
-                    #         cv2.circle(frame, shape['pixel_center'], int(shape['radius']), (255, 0, 0), 2)
-                    #     elif shape['shape'] in ['Square', 'Rectangle']:
-                    #         cv2.drawContours(frame, [shape['box']], 0, (0, 255, 255), 2)
-                    #         # Draw the orientation arrow
-                    #         cv2.arrowedLine(frame, shape['pixel_center'], shape['arrow_end'], (0, 255, 0), 2, tipLength=0.3)
-                    #         # Display orientation and rotation direction
-                    #         cv2.putText(frame, f"Angle: {shape['orientation']:.2f}",
-                    #                     (shape['pixel_center'][0] + 10, shape['pixel_center'][1] + 30),
-                    #                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                    #     cv2.circle(frame, shape['pixel_center'], 5, (0, 255, 0), -1)
-                    #     cv2.putText(frame, f"{shape['shape']} Rank: {i+1}",
-                    #                 (shape['pixel_center'][0] + 10, shape['pixel_center'][1] - 30),
-                    #                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-                    #     cv2.putText(frame, f"({shape['world_center'][0]:.2f}, {shape['world_center'][1]:.2f})",
-                    #                 (shape['pixel_center'][0] + 10, shape['pixel_center'][1] - 10),
-                    #                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)                   
+                    for i, shape in enumerate(shapes_info):
+                        if shape['shape'] == 'Circle':
+                            cv2.circle(frame, shape['pixel_center'], int(shape['radius']), (255, 0, 0), 2)
+                        elif shape['shape'] in ['Square', 'Rectangle']:
+                            cv2.drawContours(frame, [shape['box']], 0, (0, 255, 255), 2)
+                            # Draw the orientation arrow
+                            cv2.arrowedLine(frame, shape['pixel_center'], shape['arrow_end'], (0, 255, 0), 2, tipLength=0.3)
+                            # Display orientation and rotation direction
+                            cv2.putText(frame, f"Angle: {shape['orientation']:.2f}",
+                                        (shape['pixel_center'][0] + 10, shape['pixel_center'][1] + 30),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                        cv2.circle(frame, shape['pixel_center'], 5, (0, 255, 0), -1)
+                        cv2.putText(frame, f"{shape['shape']} Rank: {i+1}",
+                                    (shape['pixel_center'][0] + 10, shape['pixel_center'][1] - 30),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                        cv2.putText(frame, f"({shape['world_center'][0]:.2f}, {shape['world_center'][1]:.2f})",
+                                    (shape['pixel_center'][0] + 10, shape['pixel_center'][1] - 10),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)                   
 
-            # cv2.imshow("Shape Detection with Area Ranking and Real-World Coordinates", frame)
+            cv2.imshow("Shape Detection with Area Ranking and Real-World Coordinates", frame)
 
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
